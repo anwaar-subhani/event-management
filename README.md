@@ -1,0 +1,2 @@
+# event-management
+This is a semester project for course "Web Programming" using MERN stack. We two fellows in collaboration completed this project , "Smart Event Management System".
