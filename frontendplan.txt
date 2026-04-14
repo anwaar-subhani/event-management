@@ -1,0 +1,328 @@
+FRONTEND UI ARCHITECTURE PLAN
+Project: Smart Event Management System (MERN)
+Date: 13-Apr-2026
+Team: Anwaar + Twaha
+
+==================================================
+1) OBJECTIVE
+==================================================
+This file defines complete frontend architecture:
+- Total pages
+- Components used on each page
+- Estimated component count per page
+- File-level ownership (Anwaar vs Twaha)
+- Conflict-free collaboration rules
+
+==================================================
+2) GLOBAL UI FOUNDATION
+==================================================
+Core layout files:
+- /frontend/src/layout/DashboardLayout.jsx
+- /frontend/src/layout/Navbar.jsx
+- /frontend/src/layout/Sidebar.jsx
+
+Core shared components:
+- /frontend/src/components/common/Loader.jsx
+- /frontend/src/components/common/ProtectedRoute.jsx
+- /frontend/src/components/common/RoleGuard.jsx
+- /frontend/src/components/common/SearchBar.jsx
+- /frontend/src/components/common/SocialShareButtons.jsx
+
+Global app shell files:
+- /frontend/src/main.jsx
+- /frontend/src/App.jsx
+- /frontend/src/styles/globals.css
+
+==================================================
+3) PAGE INVENTORY (TOTAL PAGES = 15)
+==================================================
+Auth:
+1) Login page
+2) Signup page
+
+Dashboard:
+3) User dashboard
+4) Admin dashboard
+
+Events:
+5) Event list
+6) Event details
+7) Event form (create/edit)
+
+Blogs:
+8) Blog list
+9) Blog details
+10) Blog form (create/edit)
+
+User & Utility:
+11) Profile page
+12) Contact page
+13) Notification center
+14) Analytics page
+15) Cash flow page
+
+==================================================
+4) PAGE-WISE UI ARCHITECTURE + COMPONENT COUNTS
+==================================================
+Note: counts below include direct page-level UI blocks and reusable components mounted on that page.
+
+[1] Login (/frontend/src/pages/auth/Login.jsx)
+- Components:
+  - Auth form container
+  - Input group (email/password)
+  - Primary button
+  - Optional Loader
+- Estimated component count: 4
+
+[2] Signup (/frontend/src/pages/auth/Signup.jsx)
+- Components:
+  - Signup form container
+  - Input group (name/email/password/role)
+  - Submit button
+  - Optional Loader
+- Estimated component count: 4
+
+[3] User Dashboard (/frontend/src/pages/dashboard/UserDashboard.jsx)
+- Components:
+  - DashboardLayout
+  - Welcome/summary header
+  - RecommendationCard list
+  - Upcoming events widget
+  - Registered events widget
+  - Notification preview widget
+- Estimated component count: 6
+
+[4] Admin Dashboard (/frontend/src/pages/dashboard/AdminDashboard.jsx)
+- Components:
+  - DashboardLayout
+  - KPI stat cards
+  - Event analytics preview
+  - Registration trend widget
+  - Revenue/cashflow preview
+  - Quick links/actions
+- Estimated component count: 6
+
+[5] Event List (/frontend/src/pages/events/EventList.jsx)
+- Components:
+  - DashboardLayout
+  - SearchBar
+  - Filter bar (type/location/date)
+  - EventCard grid
+  - Pagination
+  - Loader/empty state
+- Estimated component count: 6
+
+[6] Event Details (/frontend/src/pages/events/EventDetails.jsx)
+- Components:
+  - DashboardLayout
+  - Event hero/details section
+  - Organizer profile snippet
+  - SocialShareButtons
+  - Register button block
+  - Ticket/Certificate action block
+- Estimated component count: 6
+
+[7] Event Form (/frontend/src/pages/events/EventForm.jsx)
+- Components:
+  - DashboardLayout
+  - Event form fields
+  - Date/time selector
+  - Location section
+  - Image upload
+  - Submit/cancel actions
+- Estimated component count: 6
+
+[8] Blog List (/frontend/src/pages/blogs/BlogList.jsx)
+- Components:
+  - DashboardLayout
+  - Search/filter area
+  - BlogCard list
+  - Pagination
+  - Create blog CTA
+- Estimated component count: 5
+
+[9] Blog Details (/frontend/src/pages/blogs/BlogDetails.jsx)
+- Components:
+  - DashboardLayout
+  - Blog content section
+  - Author section
+  - SocialShareButtons
+  - Related posts section
+- Estimated component count: 5
+
+[10] Blog Form (/frontend/src/pages/blogs/BlogForm.jsx)
+- Components:
+  - DashboardLayout
+  - Blog title/content editor fields
+  - Tag/category section
+  - Image upload
+  - Save/publish actions
+- Estimated component count: 5
+
+[11] Profile Page (/frontend/src/pages/profile/ProfilePage.jsx)
+- Components:
+  - DashboardLayout
+  - Profile header (photo + bio)
+  - Registered events section
+  - Past events section
+  - Certificates section
+  - Blogs written section
+- Estimated component count: 6
+
+[12] Contact Page (/frontend/src/pages/contact/ContactPage.jsx)
+- Components:
+  - DashboardLayout
+  - Contact form
+  - Contact info section
+  - Embedded Google map section
+- Estimated component count: 4
+
+[13] Notification Center (/frontend/src/pages/notifications/NotificationCenter.jsx)
+- Components:
+  - DashboardLayout
+  - Notification list
+  - Notification filters/tabs
+  - Mark all read action bar
+  - Empty state block
+- Estimated component count: 5
+
+[14] Analytics Page (/frontend/src/pages/analytics/AnalyticsPage.jsx)
+- Components:
+  - DashboardLayout
+  - KPI cards row
+  - Registration chart
+  - Popular events chart/table
+  - Engagement metrics section
+- Estimated component count: 5
+
+[15] Cash Flow Page (/frontend/src/pages/cashflow/CashFlowPage.jsx)
+- Components:
+  - DashboardLayout
+  - Revenue/expense summary cards
+  - Profit chart/table
+  - Per-event cashflow table
+  - Date range filter bar
+- Estimated component count: 5
+
+Total estimated page-mounted components across all pages = 78
+
+==================================================
+5) REUSABLE COMPONENT FILES (CURRENT)
+==================================================
+Common:
+- /frontend/src/components/common/Loader.jsx
+- /frontend/src/components/common/ProtectedRoute.jsx
+- /frontend/src/components/common/RoleGuard.jsx
+- /frontend/src/components/common/SearchBar.jsx
+- /frontend/src/components/common/SocialShareButtons.jsx
+
+Domain components:
+- /frontend/src/components/events/EventCard.jsx
+- /frontend/src/components/blogs/BlogCard.jsx
+- /frontend/src/components/recommendations/RecommendationCard.jsx
+
+==================================================
+6) FILE OWNERSHIP (FRONTEND-FIRST PHASE)
+==================================================
+A) ANWAAR - PRIMARY OWNER (Frontend modules)
+--------------------------------------------------
+Pages:
+- /frontend/src/pages/events/EventList.jsx
+- /frontend/src/pages/events/EventDetails.jsx
+- /frontend/src/pages/events/EventForm.jsx
+- /frontend/src/pages/analytics/AnalyticsPage.jsx
+- /frontend/src/pages/cashflow/CashFlowPage.jsx
+
+Components:
+- /frontend/src/components/events/EventCard.jsx
+- /frontend/src/components/recommendations/RecommendationCard.jsx
+
+API client files:
+- /frontend/src/services/apiClient/eventApi.js
+- /frontend/src/services/apiClient/analyticsApi.js
+- /frontend/src/services/apiClient/recommendationApi.js
+- /frontend/src/services/apiClient/cashFlowApi.js
+
+B) TWAHA - PRIMARY OWNER (Frontend modules)
+--------------------------------------------------
+App shell + layout:
+- /frontend/src/main.jsx
+- /frontend/src/App.jsx
+- /frontend/src/styles/globals.css
+- /frontend/src/layout/Navbar.jsx
+- /frontend/src/layout/Sidebar.jsx
+- /frontend/src/layout/DashboardLayout.jsx
+
+Pages:
+- /frontend/src/pages/auth/Login.jsx
+- /frontend/src/pages/auth/Signup.jsx
+- /frontend/src/pages/dashboard/UserDashboard.jsx
+- /frontend/src/pages/dashboard/AdminDashboard.jsx
+- /frontend/src/pages/blogs/BlogList.jsx
+- /frontend/src/pages/blogs/BlogDetails.jsx
+- /frontend/src/pages/blogs/BlogForm.jsx
+- /frontend/src/pages/profile/ProfilePage.jsx
+- /frontend/src/pages/contact/ContactPage.jsx
+- /frontend/src/pages/notifications/NotificationCenter.jsx
+
+Components:
+- /frontend/src/components/common/Loader.jsx
+- /frontend/src/components/common/ProtectedRoute.jsx
+- /frontend/src/components/common/RoleGuard.jsx
+- /frontend/src/components/common/SearchBar.jsx
+- /frontend/src/components/common/SocialShareButtons.jsx
+- /frontend/src/components/blogs/BlogCard.jsx
+
+State + hooks:
+- /frontend/src/store/index.js
+- /frontend/src/store/slices/authSlice.js
+- /frontend/src/store/slices/eventSlice.js
+- /frontend/src/store/slices/blogSlice.js
+- /frontend/src/store/slices/profileSlice.js
+- /frontend/src/store/slices/notificationSlice.js
+- /frontend/src/store/slices/analyticsSlice.js
+- /frontend/src/store/slices/recommendationSlice.js
+- /frontend/src/hooks/useAuth.js
+- /frontend/src/hooks/useNotifications.js
+
+API client files:
+- /frontend/src/services/apiClient/axiosClient.js
+- /frontend/src/services/apiClient/authApi.js
+- /frontend/src/services/apiClient/blogApi.js
+- /frontend/src/services/apiClient/profileApi.js
+- /frontend/src/services/apiClient/notificationApi.js
+- /frontend/src/services/apiClient/pdfApi.js
+
+Tests:
+- /frontend/tests/App.test.jsx
+- /frontend/tests/Dashboard.test.jsx
+- /frontend/tests/Auth.test.jsx
+
+C) REVIEWER MAPPING
+--------------------------------------------------
+- For files owned by Anwaar -> reviewer: Twaha
+- For files owned by Twaha -> reviewer: Anwaar
+
+==================================================
+7) COLLABORATION RULES (NO MERGE CONFLICT)
+==================================================
+1. Do not edit files owned by the other person directly.
+2. If change needed in teammate file, open issue + request patch via PR.
+3. One feature per branch:
+   - anwaar/fe-events-analytics
+   - twaha/fe-dashboard-auth
+4. Rebase with develop daily.
+5. Keep PR focused and small.
+6. Merge only after teammate review.
+
+==================================================
+8) FRONTEND COMPLETION CHECKLIST
+==================================================
+[ ] All 15 pages have basic UI skeleton
+[ ] Navigation and protected routes wired
+[ ] Reusable components integrated
+[ ] Mock data flows working for all screens
+[ ] Responsive behavior checked (mobile/tablet/desktop)
+[ ] Frontend ready for backend API integration
+
+End of frontend UI architecture plan.

@@ -1,0 +1,413 @@
+SMART EVENT MANAGEMENT SYSTEM - COLLABORATION + FILE OWNERSHIP PLAN
+Date: 13-Apr-2026
+Team Members: Anwaar, Twaha
+Stack: MERN (MongoDB, Express, React, Node)
+
+==================================================
+1) PURPOSE
+==================================================
+This plan ensures both members can work in parallel on GitHub with minimal merge conflicts by assigning clear file ownership.
+
+==================================================
+2) COMPLETE PROJECT FOLDER STRUCTURE
+==================================================
+event-management/
+├── README.md
+├── plandocument.txt
+├── docs/
+│   ├── api-contract.md
+│   ├── schema.md
+│   └── ui-routes.md
+├── backend/
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── package.json
+│   ├── README.md
+│   ├── src/
+│   │   ├── app.js
+│   │   ├── server.js
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   ├── Event.js
+│   │   │   ├── Blog.js
+│   │   │   ├── Registration.js
+│   │   │   ├── Notification.js
+│   │   │   └── CashFlow.js
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   ├── eventController.js
+│   │   │   ├── blogController.js
+│   │   │   ├── profileController.js
+│   │   │   ├── registrationController.js
+│   │   │   ├── recommendationController.js
+│   │   │   ├── analyticsController.js
+│   │   │   ├── notificationController.js
+│   │   │   ├── pdfController.js
+│   │   │   └── cashFlowController.js
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js
+│   │   │   ├── eventRoutes.js
+│   │   │   ├── blogRoutes.js
+│   │   │   ├── profileRoutes.js
+│   │   │   ├── registrationRoutes.js
+│   │   │   ├── recommendationRoutes.js
+│   │   │   ├── analyticsRoutes.js
+│   │   │   ├── notificationRoutes.js
+│   │   │   ├── pdfRoutes.js
+│   │   │   └── cashFlowRoutes.js
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js
+│   │   │   ├── roleMiddleware.js
+│   │   │   ├── errorMiddleware.js
+│   │   │   └── validateMiddleware.js
+│   │   ├── services/
+│   │   │   ├── openaiService.js
+│   │   │   ├── pdfService.js
+│   │   │   ├── notificationService.js
+│   │   │   └── analyticsService.js
+│   │   └── utils/
+│   │       ├── apiResponse.js
+│   │       └── constants.js
+│   └── tests/
+│       ├── auth.test.js
+│       ├── events.test.js
+│       ├── blogs.test.js
+│       └── analytics.test.js
+└── frontend/
+    ├── .gitignore
+    ├── package.json
+    ├── README.md
+    ├── index.html
+    ├── public/
+    ├── src/
+    │   ├── main.jsx
+    │   ├── App.jsx
+    │   ├── assets/
+    │   ├── styles/
+    │   │   └── globals.css
+    │   ├── layout/
+    │   │   ├── Navbar.jsx
+    │   │   ├── Sidebar.jsx
+    │   │   └── DashboardLayout.jsx
+    │   ├── pages/
+    │   │   ├── auth/
+    │   │   │   ├── Login.jsx
+    │   │   │   └── Signup.jsx
+    │   │   ├── dashboard/
+    │   │   │   ├── UserDashboard.jsx
+    │   │   │   └── AdminDashboard.jsx
+    │   │   ├── events/
+    │   │   │   ├── EventList.jsx
+    │   │   │   ├── EventDetails.jsx
+    │   │   │   └── EventForm.jsx
+    │   │   ├── blogs/
+    │   │   │   ├── BlogList.jsx
+    │   │   │   ├── BlogDetails.jsx
+    │   │   │   └── BlogForm.jsx
+    │   │   ├── profile/
+    │   │   │   └── ProfilePage.jsx
+    │   │   ├── contact/
+    │   │   │   └── ContactPage.jsx
+    │   │   ├── notifications/
+    │   │   │   └── NotificationCenter.jsx
+    │   │   ├── analytics/
+    │   │   │   └── AnalyticsPage.jsx
+    │   │   └── cashflow/
+    │   │       └── CashFlowPage.jsx
+    │   ├── components/
+    │   │   ├── common/
+    │   │   │   ├── Loader.jsx
+    │   │   │   ├── ProtectedRoute.jsx
+    │   │   │   ├── RoleGuard.jsx
+    │   │   │   ├── SearchBar.jsx
+    │   │   │   └── SocialShareButtons.jsx
+    │   │   ├── events/
+    │   │   │   └── EventCard.jsx
+    │   │   ├── blogs/
+    │   │   │   └── BlogCard.jsx
+    │   │   └── recommendations/
+    │   │       └── RecommendationCard.jsx
+    │   ├── store/
+    │   │   ├── index.js
+    │   │   └── slices/
+    │   │       ├── authSlice.js
+    │   │       ├── eventSlice.js
+    │   │       ├── blogSlice.js
+    │   │       ├── profileSlice.js
+    │   │       ├── notificationSlice.js
+    │   │       ├── analyticsSlice.js
+    │   │       └── recommendationSlice.js
+    │   ├── services/
+    │   │   └── apiClient/
+    │   │       ├── axiosClient.js
+    │   │       ├── authApi.js
+    │   │       ├── eventApi.js
+    │   │       ├── blogApi.js
+    │   │       ├── profileApi.js
+    │   │       ├── analyticsApi.js
+    │   │       ├── recommendationApi.js
+    │   │       ├── notificationApi.js
+    │   │       ├── pdfApi.js
+    │   │       └── cashFlowApi.js
+    │   └── hooks/
+    │       ├── useAuth.js
+    │       └── useNotifications.js
+    └── tests/
+        ├── App.test.jsx
+        ├── Dashboard.test.jsx
+        └── Auth.test.jsx
+
+==================================================
+3) FILE OWNERSHIP (CONFLICT-FREE)
+==================================================
+Legend:
+- Primary Owner = person who edits by default
+- Secondary Reviewer = reviews PR, avoids direct edits unless discussed
+
+A) ANWAAR (Primary Owner) | TWAHA (Secondary Reviewer)
+--------------------------------------------------
+/docs/api-contract.md
+/docs/schema.md
+
+/backend/.env.example
+/backend/package.json
+/backend/README.md
+/backend/src/app.js
+/backend/src/server.js
+/backend/src/config/db.js
+
+/backend/src/models/User.js
+/backend/src/models/Event.js
+/backend/src/models/Blog.js
+/backend/src/models/Registration.js
+/backend/src/models/Notification.js
+/backend/src/models/CashFlow.js
+
+/backend/src/controllers/authController.js
+/backend/src/controllers/eventController.js
+/backend/src/controllers/blogController.js
+/backend/src/controllers/profileController.js
+/backend/src/controllers/registrationController.js
+/backend/src/controllers/recommendationController.js
+/backend/src/controllers/analyticsController.js
+/backend/src/controllers/notificationController.js
+/backend/src/controllers/pdfController.js
+/backend/src/controllers/cashFlowController.js
+
+/backend/src/routes/authRoutes.js
+/backend/src/routes/eventRoutes.js
+/backend/src/routes/blogRoutes.js
+/backend/src/routes/profileRoutes.js
+/backend/src/routes/registrationRoutes.js
+/backend/src/routes/recommendationRoutes.js
+/backend/src/routes/analyticsRoutes.js
+/backend/src/routes/notificationRoutes.js
+/backend/src/routes/pdfRoutes.js
+/backend/src/routes/cashFlowRoutes.js
+
+/backend/src/middleware/authMiddleware.js
+/backend/src/middleware/roleMiddleware.js
+/backend/src/middleware/errorMiddleware.js
+/backend/src/middleware/validateMiddleware.js
+
+/backend/src/services/openaiService.js
+/backend/src/services/pdfService.js
+/backend/src/services/notificationService.js
+/backend/src/services/analyticsService.js
+
+/backend/src/utils/apiResponse.js
+/backend/src/utils/constants.js
+
+/backend/tests/auth.test.js
+/backend/tests/events.test.js
+/backend/tests/blogs.test.js
+/backend/tests/analytics.test.js
+
+B) TWAHA (Primary Owner) | ANWAAR (Secondary Reviewer)
+--------------------------------------------------
+/docs/ui-routes.md
+/frontend/package.json
+/frontend/README.md
+/frontend/index.html
+/frontend/src/main.jsx
+/frontend/src/App.jsx
+/frontend/src/styles/globals.css
+
+/frontend/src/layout/Navbar.jsx
+/frontend/src/layout/Sidebar.jsx
+/frontend/src/layout/DashboardLayout.jsx
+
+/frontend/src/pages/auth/Login.jsx
+/frontend/src/pages/auth/Signup.jsx
+/frontend/src/pages/dashboard/UserDashboard.jsx
+/frontend/src/pages/dashboard/AdminDashboard.jsx
+/frontend/src/pages/events/EventList.jsx
+/frontend/src/pages/events/EventDetails.jsx
+/frontend/src/pages/events/EventForm.jsx
+/frontend/src/pages/blogs/BlogList.jsx
+/frontend/src/pages/blogs/BlogDetails.jsx
+/frontend/src/pages/blogs/BlogForm.jsx
+/frontend/src/pages/profile/ProfilePage.jsx
+/frontend/src/pages/contact/ContactPage.jsx
+/frontend/src/pages/notifications/NotificationCenter.jsx
+/frontend/src/pages/analytics/AnalyticsPage.jsx
+/frontend/src/pages/cashflow/CashFlowPage.jsx
+
+/frontend/src/components/common/Loader.jsx
+/frontend/src/components/common/ProtectedRoute.jsx
+/frontend/src/components/common/RoleGuard.jsx
+/frontend/src/components/common/SearchBar.jsx
+/frontend/src/components/common/SocialShareButtons.jsx
+/frontend/src/components/events/EventCard.jsx
+/frontend/src/components/blogs/BlogCard.jsx
+/frontend/src/components/recommendations/RecommendationCard.jsx
+
+/frontend/src/store/index.js
+/frontend/src/store/slices/authSlice.js
+/frontend/src/store/slices/eventSlice.js
+/frontend/src/store/slices/blogSlice.js
+/frontend/src/store/slices/profileSlice.js
+/frontend/src/store/slices/notificationSlice.js
+/frontend/src/store/slices/analyticsSlice.js
+/frontend/src/store/slices/recommendationSlice.js
+
+/frontend/src/services/apiClient/axiosClient.js
+/frontend/src/services/apiClient/authApi.js
+/frontend/src/services/apiClient/eventApi.js
+/frontend/src/services/apiClient/blogApi.js
+/frontend/src/services/apiClient/profileApi.js
+/frontend/src/services/apiClient/analyticsApi.js
+/frontend/src/services/apiClient/recommendationApi.js
+/frontend/src/services/apiClient/notificationApi.js
+/frontend/src/services/apiClient/pdfApi.js
+/frontend/src/services/apiClient/cashFlowApi.js
+
+/frontend/src/hooks/useAuth.js
+/frontend/src/hooks/useNotifications.js
+
+/frontend/tests/App.test.jsx
+/frontend/tests/Dashboard.test.jsx
+/frontend/tests/Auth.test.jsx
+
+C) SHARED FILES (ONLY ONE EDITOR PER WEEK)
+--------------------------------------------------
+/README.md
+/plandocument.txt
+Rule:
+- Odd weeks: Anwaar edits docs/shared files
+- Even weeks: Twaha edits docs/shared files
+- Other person only reviews and comments on PR
+
+==================================================
+4) GITHUB BRANCH AND MERGE RULES
+==================================================
+- Protected branches: main, develop
+- Work branches:
+  - anwaar/<feature-name>
+  - twaha/<feature-name>
+- PR flow: feature -> develop -> main
+- No direct commits to main/develop
+- Rebase with develop daily
+- Keep PR small (preferably < 400 lines)
+
+==================================================
+5) INTEGRATION CHECKPOINTS
+==================================================
+Freeze in Week 1:
+1. API response format
+2. Auth token strategy
+3. Role permissions (user/admin)
+4. Search query format
+5. PDF ticket/certificate output shape
+
+==================================================
+6) FEATURE SPLIT SUMMARY
+==================================================
+Anwaar: Backend, security, auth, CRUD APIs, analytics, cashflow, notifications backend, AI backend, PDF backend.
+Twaha: Frontend UI/UX, Redux, dashboard/pages/components, social sharing, contact map embed, responsive design, frontend integration.
+
+==================================================
+7) FRONTEND-FIRST EXECUTION PLAN (RECOMMENDED)
+==================================================
+Yes, this is a strong strategy for a 2-member team.
+
+Phase 1 (Week 1-2): Frontend first with mocked data
+- Goal: complete all UI screens/components and user flows before backend integration.
+- Benefits:
+  1. Fast visible progress
+  2. Fewer backend/frontend dependency blockers
+  3. Cleaner API requirements discovery from real screens
+
+Frontend split for this phase:
+
+A) ANWAAR (Frontend Module Owner)
+- /frontend/src/pages/events/**
+- /frontend/src/pages/analytics/**
+- /frontend/src/pages/cashflow/**
+- /frontend/src/components/events/**
+- /frontend/src/components/recommendations/**
+- /frontend/src/services/apiClient/eventApi.js
+- /frontend/src/services/apiClient/analyticsApi.js
+- /frontend/src/services/apiClient/recommendationApi.js
+- /frontend/src/services/apiClient/cashFlowApi.js
+
+B) TWAHA (Frontend Module Owner)
+- /frontend/src/layout/**
+- /frontend/src/pages/auth/**
+- /frontend/src/pages/dashboard/**
+- /frontend/src/pages/blogs/**
+- /frontend/src/pages/profile/**
+- /frontend/src/pages/contact/**
+- /frontend/src/pages/notifications/**
+- /frontend/src/components/common/**
+- /frontend/src/components/blogs/**
+- /frontend/src/store/**
+- /frontend/src/hooks/**
+- /frontend/src/services/apiClient/authApi.js
+- /frontend/src/services/apiClient/blogApi.js
+- /frontend/src/services/apiClient/profileApi.js
+- /frontend/src/services/apiClient/notificationApi.js
+- /frontend/src/services/apiClient/pdfApi.js
+
+Shared frontend root files (strict lock rule):
+- /frontend/src/App.jsx -> Twaha
+- /frontend/src/main.jsx -> Twaha
+- /frontend/src/styles/globals.css -> Twaha
+- If Anwaar needs changes in these files: do via PR request + owner approval.
+
+Phase 2 (Week 3-4): Backend together
+- Both work on backend, but to avoid conflicts:
+  1. Split by domain route groups (not random files)
+  2. Lock API contract before coding endpoints
+  3. Never both edit same controller in same day
+
+Backend split for Phase 2:
+
+ANWAAR domain ownership:
+- Auth + Users + Security
+- Events + Registrations
+- Notifications + PDF
+
+TWAHA domain ownership:
+- Blogs + Profiles
+- AI Recommendations
+- Analytics + CashFlow
+
+Required handoff checklist before backend starts:
+- Finalize /docs/api-contract.md
+- Finalize /docs/ui-routes.md
+- Define request/response examples for every endpoint
+- Agree status codes and error format
+- Freeze naming conventions (camelCase fields, route names)
+
+Conflict prevention during "backend together" phase:
+- Branch naming:
+  - anwaar/be-auth-events
+  - twaha/be-blogs-analytics
+- Daily rebase from develop
+- Small PRs (1 domain at a time)
+- Mandatory review by teammate before merge
+
+End of plan.
