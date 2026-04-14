@@ -11,6 +11,7 @@
 
 html {
   font-size: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 * {
@@ -23,6 +24,21 @@ body {
   font-weight: 400;
   color: var(--text);
   background: var(--background);
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
 }
 
 h1,
@@ -66,6 +82,9 @@ button {
   border: 1px solid var(--buttons);
   font-family: 'LXGW WenKai TC';
   font-weight: 700;
+  padding: 0.55rem 1rem;
+  border-radius: 0.5rem;
+  line-height: 1.1;
   cursor: pointer;
 }
 
@@ -81,6 +100,7 @@ button {
 .nav-left,
 .nav-right {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
 }
@@ -92,5 +112,54 @@ button {
 }
 
 .page {
-  min-height: calc(100vh - 73px);
+  width: 100%;
+  min-height: calc(100dvh - 73px);
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 3.2rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+  }
+
+  h4 {
+    font-size: 1.55rem;
+  }
+
+  h5 {
+    font-size: 1.2rem;
+  }
+
+  .navbar {
+    padding: 0.85rem 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .nav-left,
+  .nav-right {
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .nav-right {
+    justify-content: flex-end;
+  }
+
+  .page {
+    min-height: calc(100dvh - 112px);
+  }
 }
