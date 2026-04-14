@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar'
 
 export default function HomePage() {
   return (
@@ -6,5 +6,5 @@ export default function HomePage() {
       <Navbar />
       <main className="page" />
     </>
-  );
+  )
 }

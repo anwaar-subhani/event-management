@@ -1,3 +1,3 @@
 export default function LoginPage() {
-  return <main className="page" />;
+  return <main className="page" />
 }

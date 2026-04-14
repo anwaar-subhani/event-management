@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=LXGW%20WenKai%20TC:700|LXGW%20WenKai%20TC:400');
+
+:root {
+  --text: #191918;
+  --background: #eeddd3;
+  --primary: #d4b385;
+  --secondary: #ae8b79;
+  --accent: #c56511;
+  --buttons: #c56511;
+}
+
+html {
+  font-size: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'LXGW WenKai TC';
+  font-weight: 400;
+  color: var(--text);
+  background: var(--background);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'LXGW WenKai TC';
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+h1 {
+  font-size: 4.21rem;
+}
+
+h2 {
+  font-size: 3.158rem;
+}
+
+h3 {
+  font-size: 2.369rem;
+}
+
+h4 {
+  font-size: 1.777rem;
+}
+
+h5 {
+  font-size: 1.333rem;
+}
+
+small {
+  font-size: 0.75rem;
+}
+
+button {
+  background: var(--buttons);
+  color: var(--background);
+  border: 1px solid var(--buttons);
+  font-family: 'LXGW WenKai TC';
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--secondary);
+  background: var(--primary);
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.page {
+  min-height: calc(100vh - 73px);
+}
