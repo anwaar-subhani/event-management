@@ -1,0 +1,109 @@
+/* Background */
+.auth-container {
+  min-height: calc(100dvh - 73px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--background);
+  color: var(--text);
+  padding: 1.25rem;
+}
+
+/* Card */
+.auth-box {
+  background: color-mix(in srgb, var(--primary) 35%, var(--background));
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  border: 1px solid var(--secondary);
+  box-shadow: 0 8px 24px rgba(25, 25, 24, 0.12);
+  text-align: center;
+}
+
+/* Toggle Buttons */
+.toggle-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.toggle-buttons button {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: 0.3s;
+}
+
+.toggle-buttons .active {
+  color: var(--buttons);
+  font-weight: bold;
+  border-bottom: 2px solid var(--buttons);
+}
+
+/* Title */
+.auth-box h2 {
+  margin-bottom: 15px;
+}
+
+/* Inputs */
+.auth-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid var(--secondary);
+  background: var(--background);
+  color: var(--text);
+  border-radius: 6px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.auth-box input:focus {
+  border-color: var(--buttons);
+}
+
+/* Buttons */
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: var(--buttons);
+  border: 1px solid var(--buttons);
+  color: var(--background);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  filter: brightness(0.92);
+}
+
+/* Text */
+.auth-box p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.auth-box span {
+  color: var(--buttons);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .auth-box {
+    width: 90%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-container {
+    min-height: calc(100dvh - 112px);
+  }
+}
