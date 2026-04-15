@@ -2,7 +2,7 @@
 
 :root {
   --text: #191918;
-  --background: #eeddd3;
+  --background: #f1d4c3;
   --primary: #d4b385;
   --secondary: #ae8b79;
   --accent: #c56511;
@@ -23,7 +23,10 @@ body {
   font-family: 'LXGW WenKai TC';
   font-weight: 400;
   color: var(--text);
-  background: var(--background);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--primary) 26%, transparent) 0%, transparent 45%),
+    radial-gradient(circle at bottom left, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 40%),
+    var(--background);
   min-width: 320px;
   overflow-x: hidden;
 }
@@ -88,13 +91,20 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  filter: brightness(0.95);
+}
+
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 1.15rem 1.75rem;
   border-bottom: 1px solid var(--secondary);
-  background: var(--primary);
+  background: color-mix(in srgb, var(--primary) 80%, var(--background) 20%);
+  backdrop-filter: blur(5px);
 }
 
 .nav-left,
@@ -102,13 +112,15 @@ button {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .navbar a {
   text-decoration: none;
   color: var(--text);
-  font-weight: 500;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .page {
@@ -117,28 +129,8 @@ button {
 }
 
 @media (max-width: 900px) {
-  h1 {
-    font-size: 3.2rem;
-  }
-
-  h2 {
-    font-size: 2.5rem;
-  }
-
-  h3 {
-    font-size: 2rem;
-  }
-
-  h4 {
-    font-size: 1.55rem;
-  }
-
-  h5 {
-    font-size: 1.2rem;
-  }
-
   .navbar {
-    padding: 0.85rem 1rem;
+    padding: 0.95rem 1.2rem;
   }
 }
 
@@ -162,4 +154,5 @@ button {
   .page {
     min-height: calc(100dvh - 112px);
   }
+
 }
