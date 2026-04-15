@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=LXGW%20WenKai%20TC:700|LXGW%20WenKai%20TC:400');
-
 :root {
   --text: #191918;
   --background: #eeddd3;
@@ -20,7 +18,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'LXGW WenKai TC';
+  font-family: Garamond, 'Times New Roman', serif;
   font-weight: 400;
   color: var(--text);
   background: var(--background);
@@ -46,7 +44,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'LXGW WenKai TC';
+  font-family: Georgia, 'Times New Roman', serif;
   font-weight: 700;
   margin: 0;
   color: var(--text);
@@ -80,7 +78,7 @@ button {
   background: var(--buttons);
   color: var(--background);
   border: 1px solid var(--buttons);
-  font-family: 'LXGW WenKai TC';
+  font-family: Garamond, 'Times New Roman', serif;
   font-weight: 700;
   padding: 0.55rem 1rem;
   border-radius: 0.5rem;
