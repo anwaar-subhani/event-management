@@ -1,6 +1,7 @@
 import Navbar from '../components/Navbar'
 import './HomePage.css'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const heroImages = [
   new URL('../../event-images/basant-2-tikits.jpeg', import.meta.url).href,
@@ -18,6 +19,7 @@ const aboutUsImage = new URL(
 
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -54,7 +56,11 @@ export default function HomePage() {
               </p>
               <div className="button-row">
                 <button type="button">Explore Events</button>
-                <button type="button" className="button-secondary">
+                <button
+                  type="button"
+                  className="button-secondary"
+                  onClick={() => navigate('/organizer-dashboard')}
+                >
                   Create Event
                 </button>
               </div>
