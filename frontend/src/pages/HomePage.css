@@ -255,6 +255,31 @@
   margin-bottom: 0.2rem;
 }
 
+.home-page .footer-brand-title {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.02em;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.42rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  line-height: 1;
+}
+
+.home-page .footer-brand-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.32rem;
+  width: 100%;
+  height: 2px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 42%, transparent), var(--accent));
+  transform: scaleX(0.32);
+  transform-origin: left;
+}
+
 .home-page .footer-brand .meta {
   max-width: 340px;
 }
@@ -352,5 +377,9 @@
   .home-page .footer-content {
     flex-direction: column;
     gap: 0.55rem;
+  }
+
+  .home-page .footer-brand-title {
+    font-size: 1.2rem;
   }
 }

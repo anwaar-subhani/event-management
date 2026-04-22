@@ -151,7 +151,10 @@ export default function HomePage() {
         <section className="section footer-section">
           <div className="container footer-content">
             <div className="footer-brand">
-              <h3>EventHub</h3>
+              <h3 className="footer-brand-title">
+                <span className="brand-main">Event</span>
+                <span className="brand-accent">um</span>
+              </h3>
               <p className="meta">Smart event discovery and management platform.</p>
             </div>
             <div className="footer-links">

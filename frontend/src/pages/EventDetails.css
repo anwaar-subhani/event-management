@@ -90,12 +90,111 @@
   background: var(--buttons);
   color: var(--background);
   border: 1px solid var(--buttons);
+  cursor: pointer;
 }
 
 .details-back-link {
   color: var(--text);
   background: transparent;
   border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
+}
+
+.purchase-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  padding: 18px;
+}
+
+.purchase-modal {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--secondary) 50%, transparent);
+  background: var(--background);
+  box-shadow: 0 14px 40px color-mix(in srgb, var(--primary) 25%, transparent);
+  padding: 1.2rem 1.05rem;
+}
+
+.purchase-modal h3 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+}
+
+.purchase-modal-subtitle {
+  margin: 0.3rem 0 0.8rem;
+  font-family: Garamond, 'Times New Roman', serif;
+  color: color-mix(in srgb, var(--text) 75%, var(--secondary) 25%);
+}
+
+.purchase-modal-close {
+  position: absolute;
+  right: 0.55rem;
+  top: 0.45rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.purchase-form {
+  display: grid;
+  gap: 0.34rem;
+}
+
+.purchase-form label {
+  font-family: Garamond, 'Times New Roman', serif;
+  font-weight: 700;
+  margin-top: 0.45rem;
+}
+
+.purchase-form input {
+  border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
+  border-radius: 0.5rem;
+  padding: 0.53rem 0.58rem;
+  font-size: 0.95rem;
+  font-family: Garamond, 'Times New Roman', serif;
+  background: color-mix(in srgb, var(--background) 82%, var(--primary) 18%);
+  color: var(--text);
+}
+
+.purchase-form input:focus {
+  outline: 2px solid color-mix(in srgb, var(--buttons) 55%, white 45%);
+  outline-offset: 1px;
+}
+
+.purchase-form-message {
+  margin: 0.65rem 0 0;
+  font-family: Garamond, 'Times New Roman', serif;
+  font-weight: 700;
+  color: var(--buttons);
+}
+
+.purchase-submit-button {
+  margin-top: 0.7rem;
+  border: 1px solid var(--buttons);
+  border-radius: 0.55rem;
+  padding: 0.55rem 0.8rem;
+  font-family: Garamond, 'Times New Roman', serif;
+  font-weight: 700;
+  background: var(--buttons);
+  color: var(--background);
+  cursor: pointer;
+}
+
+.purchase-submit-button:hover,
+.purchase-submit-button:focus-visible {
+  filter: brightness(0.94);
 }
 
 @media (max-width: 900px) {
@@ -135,5 +234,9 @@
 
   .event-details-image {
     min-height: 220px;
+  }
+
+  .purchase-modal {
+    padding: 1rem 0.9rem;
   }
 }
