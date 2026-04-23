@@ -1,0 +1,53 @@
+Backend Division Plan (2 Members, Minimal Conflicts)
+=====================================================
+
+Project Rule:
+- Normal users can buy tickets as guests (no signup/login).
+- Only organizers authenticate to create/manage events.
+
+Member A (Auth + Organizer)
+---------------------------
+Own files:
+- backend/src/models/Organizer.js
+- backend/src/controllers/organizerAuthController.js
+- backend/src/routes/organizerAuthRoutes.js
+- backend/src/middleware/requireOrganizerAuth.js
+
+Tasks:
+1) Organizer signup
+2) Organizer login
+3) JWT generation + verification
+4) Organizer profile endpoint (/me)
+
+Member B (Events + Ticket Purchase)
+-----------------------------------
+Own files:
+- backend/src/models/Event.js
+- backend/src/models/TicketPurchase.js
+- backend/src/controllers/eventController.js
+- backend/src/controllers/ticketController.js
+- backend/src/routes/eventRoutes.js
+- backend/src/routes/ticketRoutes.js
+
+Tasks:
+1) Public event list + details
+2) Organizer event create/update/delete
+3) Guest ticket purchase endpoint
+4) Limit purchase to 1..5 tickets per request/CNIC
+5) Update event ticketsSold after purchase
+
+Shared Rules
+------------
+1) Do not edit each other's owned files without discussion.
+2) Open small PRs daily.
+3) Rebase with main before PR.
+4) Keep API response format consistent:
+   { success: true/false, message: string, data: object|null }
+5) If request/response shape changes, update docs first.
+
+Suggested Branches
+------------------
+- feat/auth-organizer
+- feat/events-crud
+- feat/tickets-guest-purchase
+- chore/backend-common
