@@ -6,7 +6,9 @@ const organizerSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     passwordHash: { type: String, required: true },
     organizationName: { type: String, trim: true },
-    isActive: { type: Boolean, default: true }
+    isActive: { type: Boolean, default: true },
+    lastLoginAt: { type: Date, default: null },
+    loginCount: { type: Number, default: 0, min: 0 }
   },
   { timestamps: true }
 );
