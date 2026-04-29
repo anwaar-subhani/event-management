@@ -1,33 +1,57 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Navbar from '../components/Navbar'
 import EventCard from '../components/EventCard'
-import { eventsData } from '../data/eventsData'
+import { apiRequest } from '../utils/api'
+import { mapEventFromApi } from '../utils/eventMapper'
 import './EventsPage.css'
 
 const EVENTS_PER_PAGE = 8
 
 export default function EventsPage() {
+  const [events, setEvents] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [selectedCity, setSelectedCity] = useState('All')
   const [currentPage, setCurrentPage] = useState(1)
 
-  const categories = useMemo(() => {
-    const uniqueCategories = Array.from(new Set(eventsData.map((event) => event.category)))
-    return ['All', ...uniqueCategories]
+  useEffect(() => {
+    const loadEvents = async () => {
+      setIsLoading(true)
+      setErrorMessage('')
+
+      try {
+        const response = await apiRequest('/events')
+        const mappedEvents = (response?.data?.events || []).map(mapEventFromApi)
+        setEvents(mappedEvents)
+      } catch (error) {
+        setErrorMessage(error.message || 'Failed to load events')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadEvents()
   }, [])
 
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(new Set(events.map((event) => event.category)))
+    return ['All', ...uniqueCategories]
+  }, [events])
+
   const cities = useMemo(() => {
-    const uniqueCities = Array.from(new Set(eventsData.map((event) => event.city)))
+    const uniqueCities = Array.from(new Set(events.map((event) => event.city)))
     return ['All', ...uniqueCities]
-  }, [])
+  }, [events])
 
   const filteredEvents = useMemo(() => {
     const term = searchTerm.trim().toLowerCase()
 
-    return eventsData.filter((event) => {
+    return events.filter((event) => {
       const matchesSearch =
-        event.title.toLowerCase().includes(term) || event.date.toLowerCase().includes(term)
+        event.title.toLowerCase().includes(term) ||
+        String(event.dateLabel || event.date).toLowerCase().includes(term)
 
       const matchesCategory =
         selectedCategory === 'All' || event.category === selectedCategory
@@ -36,7 +60,7 @@ export default function EventsPage() {
 
       return matchesSearch && matchesCategory && matchesCity
     })
-  }, [searchTerm, selectedCategory, selectedCity])
+  }, [events, searchTerm, selectedCategory, selectedCity])
 
   const totalPages = Math.max(1, Math.ceil(filteredEvents.length / EVENTS_PER_PAGE))
   const safePage = Math.min(currentPage, totalPages)
@@ -102,7 +126,11 @@ export default function EventsPage() {
             </select>
           </div>
 
-          {paginatedEvents.length === 0 ? (
+          {isLoading ? (
+            <p className="events-empty-state">Loading events...</p>
+          ) : errorMessage ? (
+            <p className="events-empty-state">{errorMessage}</p>
+          ) : paginatedEvents.length === 0 ? (
             <p className="events-empty-state">No events found for your search.</p>
           ) : (
             <div className="events-grid-page">

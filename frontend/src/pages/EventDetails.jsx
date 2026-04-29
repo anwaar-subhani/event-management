@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import { eventsData } from '../data/eventsData'
+import { apiRequest } from '../utils/api'
+import { DEFAULT_EVENT_IMAGE, mapEventFromApi } from '../utils/eventMapper'
 import './EventDetails.css'
 
 export default function EventDetails() {
   const { eventId } = useParams()
-  const event = eventsData.find((item) => item.id === eventId)
+  const [event, setEvent] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false)
   const [purchaseMessage, setPurchaseMessage] = useState('')
+  const [isPurchaseLoading, setIsPurchaseLoading] = useState(false)
   const [purchaseForm, setPurchaseForm] = useState({
     ticketCount: 1,
     name: '',
@@ -16,6 +20,27 @@ export default function EventDetails() {
     email: '',
     phone: '',
   })
+
+  useEffect(() => {
+    const loadEventDetails = async () => {
+      setIsLoading(true)
+      setErrorMessage('')
+
+      try {
+        const response = await apiRequest(`/events/${eventId}`)
+        const mappedEvent = mapEventFromApi(response?.data?.event)
+        setEvent(mappedEvent)
+      } catch (error) {
+        setErrorMessage(error.message || 'Failed to load event details')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (eventId) {
+      loadEventDetails()
+    }
+  }, [eventId])
 
   const openPurchaseModal = () => {
     setPurchaseMessage('')
@@ -36,7 +61,7 @@ export default function EventDetails() {
     }))
   }
 
-  const handlePurchaseSubmit = (event) => {
+  const handlePurchaseSubmit = async (event) => {
     event.preventDefault()
 
     if (purchaseForm.ticketCount < 1 || purchaseForm.ticketCount > 5) {
@@ -44,22 +69,58 @@ export default function EventDetails() {
       return
     }
 
-    setPurchaseMessage('Ticket request submitted! Backend integration will be added next.')
-    console.log('Purchase payload to send to backend:', {
-      eventId,
-      eventTitle: event?.title,
-      ...purchaseForm,
-    })
+    setIsPurchaseLoading(true)
+
+    try {
+      const response = await apiRequest('/tickets/purchase', {
+        method: 'POST',
+        body: {
+          eventId,
+          purchaserName: purchaseForm.name,
+          purchaserCnic: purchaseForm.cnic,
+          purchaserEmail: purchaseForm.email,
+          purchaserPhone: purchaseForm.phone,
+          quantity: purchaseForm.ticketCount,
+        },
+      })
+
+      const remainingTickets = response?.data?.remainingTickets
+      setPurchaseMessage(
+        `Purchase successful! Remaining tickets: ${
+          remainingTickets === undefined ? 'updated' : remainingTickets
+        }`
+      )
+
+      const refreshedEventResponse = await apiRequest(`/events/${eventId}`)
+      setEvent(mapEventFromApi(refreshedEventResponse?.data?.event))
+    } catch (error) {
+      setPurchaseMessage(error.message || 'Ticket purchase failed')
+    } finally {
+      setIsPurchaseLoading(false)
+    }
   }
 
-  if (!event) {
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <main className="page event-details-page">
+          <div className="event-details-container">
+            <h2>Loading event...</h2>
+          </div>
+        </main>
+      </>
+    )
+  }
+
+  if (!event || errorMessage) {
     return (
       <>
         <Navbar />
         <main className="page event-details-page">
           <div className="event-details-container">
             <h2>Event not found</h2>
-            <p>Sorry, we could not find details for this event.</p>
+            <p>{errorMessage || 'Sorry, we could not find details for this event.'}</p>
             <Link className="details-back-link" to="/events">
               Back to Events
             </Link>
@@ -77,7 +138,7 @@ export default function EventDetails() {
           <div className="event-details-left">
             <h2>{event.title}</h2>
             <p className="details-meta">
-              {event.category} • {event.date} • {event.location}
+              {event.category} • {event.dateLabel} • {event.location}
             </p>
 
             <h4>About</h4>
@@ -87,7 +148,7 @@ export default function EventDetails() {
             <p>{event.details}</p>
 
             <h4>Ticket Price</h4>
-            <p className="ticket-price">{event.ticketPrice}</p>
+            <p className="ticket-price">{event.ticketPriceLabel}</p>
 
             <div className="details-actions">
               <button className="details-purchase-link" type="button" onClick={openPurchaseModal}>
@@ -101,7 +162,11 @@ export default function EventDetails() {
           </div>
 
           <div className="event-details-right">
-            <img src={event.image} alt={event.title} className="event-details-image" />
+            <img
+              src={event.image || DEFAULT_EVENT_IMAGE}
+              alt={event.title}
+              className="event-details-image"
+            />
           </div>
         </section>
 
@@ -178,7 +243,7 @@ export default function EventDetails() {
                 {purchaseMessage ? <p className="purchase-form-message">{purchaseMessage}</p> : null}
 
                 <button className="purchase-submit-button" type="submit">
-                  Purchase
+                  {isPurchaseLoading ? 'Processing...' : 'Purchase'}
                 </button>
               </form>
             </section>

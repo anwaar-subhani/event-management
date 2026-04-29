@@ -1,21 +1,42 @@
-import "./BlogsPage.css";
-import Navbar from "../components/Navbar";
+import { useEffect, useMemo, useState } from 'react';
+import './BlogsPage.css';
+import Navbar from '../components/Navbar';
+import { apiRequest } from '../utils/api';
+import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper';
 
 function BlogsPage() {
-  const blogs = [
-    {
-      id: 1,
-      title: "How to Organize a Successful Event",
-      description: "Learn the key steps to organize a perfect event.",
-      image: "https://via.placeholder.com/300"
-    },
-    {
-      id: 2,
-      title: "Top 10 Tech Events in 2025",
-      description: "Discover the best upcoming tech events.",
-      image: "https://via.placeholder.com/300"
-    }
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadBlogs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await apiRequest('/blogs');
+        setBlogs(response?.data?.blogs || []);
+      } catch {
+        setBlogs([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBlogs();
+  }, []);
+
+  const filteredBlogs = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return blogs;
+
+    return blogs.filter((blog) => {
+      return (
+        String(blog.title || '').toLowerCase().includes(term) ||
+        String(blog.description || '').toLowerCase().includes(term)
+      );
+    });
+  }, [blogs, searchTerm]);
+
   return (
     <>
       <Navbar />
@@ -31,18 +52,26 @@ function BlogsPage() {
               type="text"
               placeholder="Search blogs..."
               className="blogs-search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
             />
           </div>
 
           <div className="blogs-grid-page">
-            {blogs.map(blog => (
-              <article key={blog.id} className="blog-card">
-                <img src={blog.image} alt={blog.title} />
-                <h3>{blog.title}</h3>
-                <p>{blog.description}</p>
-                <button type="button">Read More</button>
-              </article>
-            ))}
+            {isLoading ? (
+              <p>Loading blogs...</p>
+            ) : filteredBlogs.length === 0 ? (
+              <p>None</p>
+            ) : (
+              filteredBlogs.map((blog) => (
+                <article key={blog._id} className="blog-card">
+                  <img src={blog.image || DEFAULT_EVENT_IMAGE} alt={blog.title} />
+                  <h3>{blog.title}</h3>
+                  <p>{blog.description}</p>
+                  <button type="button">Read More</button>
+                </article>
+              ))
+            )}
           </div>
         </div>
       </main>

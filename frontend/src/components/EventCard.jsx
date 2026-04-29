@@ -9,7 +9,7 @@ export default function EventCard({ event }) {
       <div className="event-card-content">
         <h4>{event.title}</h4>
         <p className="event-card-meta">{event.category}</p>
-        <p className="event-card-meta">{event.date}</p>
+        <p className="event-card-meta">{event.dateLabel || event.date}</p>
         <p className="event-card-meta">{event.location}</p>
 
         <Link className="event-card-button" to={`/events/${event.id}`}>

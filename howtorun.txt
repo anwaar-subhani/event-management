@@ -1,0 +1,91 @@
+Smart Event Management - How to Run (Windows / PowerShell)
+==========================================================
+
+Important:
+- Open this project root first: C:\Users\anwaa\Desktop\event-management
+- Use 3 separate terminals:
+  1) MongoDB
+  2) Backend
+  3) Frontend
+
+----------------------------------------------------------
+1) MongoDB (Option A: Local MongoDB service, requires Admin)
+----------------------------------------------------------
+# If MongoDB is installed as a Windows service:
+net start MongoDB
+
+# Verify service is running:
+Get-Service MongoDB
+
+# Optional: test connection in mongosh (if installed):
+mongosh "mongodb://127.0.0.1:27017/event_management"
+
+
+----------------------------------------------------------
+1) MongoDB (Option A2: Run mongod manually, no Admin needed)
+----------------------------------------------------------
+# Use this if service start fails with permission errors.
+New-Item -ItemType Directory -Force "$env:USERPROFILE\mongodb-data\db" | Out-Null
+New-Item -ItemType Directory -Force "$env:USERPROFILE\mongodb-data\log" | Out-Null
+& "C:\Program Files\MongoDB\Server\8.0\bin\mongod.exe" --dbpath "$env:USERPROFILE\mongodb-data\db" --bind_ip 127.0.0.1 --port 27017 --logpath "$env:USERPROFILE\mongodb-data\log\mongod.log" --logappend
+
+# Keep this terminal open while running backend/frontend.
+
+
+----------------------------------------------------------
+1) MongoDB (Option B: MongoDB Atlas Cloud)
+----------------------------------------------------------
+# If you use Atlas, update root .env MONGO_URI with your Atlas connection string.
+# Example format (replace placeholders):
+# MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/event_management?retryWrites=true&w=majority
+
+
+----------------------------------------------------------
+2) Backend API
+----------------------------------------------------------
+cd backend
+npm install
+npm run dev
+
+# Backend expected URL:
+# http://localhost:5000
+
+# Health check (new terminal):
+Invoke-WebRequest -UseBasicParsing http://localhost:5000/api/health | Select-Object -ExpandProperty Content
+
+
+----------------------------------------------------------
+3) Frontend (Vite React)
+----------------------------------------------------------
+cd frontend
+npm install
+npm run dev
+
+# Frontend URL is shown in terminal (usually):
+# http://localhost:5173
+
+
+----------------------------------------------------------
+4) Environment file check (already added in root)
+----------------------------------------------------------
+# File: .env
+# Ensure these keys exist:
+# PORT=5000
+# MONGO_URI=mongodb://127.0.0.1:27017/event_management
+# JWT_SECRET=replace_with_a_secure_random_secret
+# VITE_API_BASE_URL=http://localhost:5000/api
+
+# File: frontend/.env
+# VITE_API_BASE_URL=http://localhost:5000/api
+
+
+----------------------------------------------------------
+5) Useful notes for this current codebase
+----------------------------------------------------------
+- Frontend is integrated with backend API for:
+  - organizer signup/login
+  - organizer dashboard event list/create/delete
+  - public events listing/details
+  - guest ticket purchase
+- Backend health endpoint: /api/health
+- If mongosh is not recognized, MongoDB server can still run without mongosh.

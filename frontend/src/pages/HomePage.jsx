@@ -2,6 +2,8 @@ import Navbar from '../components/Navbar'
 import './HomePage.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiRequest } from '../utils/api'
+import { mapEventFromApi, DEFAULT_EVENT_IMAGE } from '../utils/eventMapper'
 
 const heroImages = [
   new URL('../../event-images/basant-2-tikits.jpeg', import.meta.url).href,
@@ -19,6 +21,8 @@ const aboutUsImage = new URL(
 
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0)
+  const [featuredEvents, setFeaturedEvents] = useState([])
+  const [topStories, setTopStories] = useState([])
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,6 +31,31 @@ export default function HomePage() {
     }, 3000)
 
     return () => clearInterval(timerId)
+  }, [])
+
+  useEffect(() => {
+    const loadHomeData = async () => {
+      try {
+        const [eventsResponse, blogsResponse] = await Promise.all([
+          apiRequest('/events'),
+          apiRequest('/blogs'),
+        ])
+
+        const events = (eventsResponse?.data?.events || [])
+          .map(mapEventFromApi)
+          .slice(0, 3)
+
+        const blogs = (blogsResponse?.data?.blogs || []).slice(0, 3)
+
+        setFeaturedEvents(events)
+        setTopStories(blogs)
+      } catch {
+        setFeaturedEvents([])
+        setTopStories([])
+      }
+    }
+
+    loadHomeData()
   }, [])
 
   return (
@@ -90,32 +119,20 @@ export default function HomePage() {
           <div className="container">
             <h2 className="section-title">Featured Events</h2>
             <div className="events-grid">
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Event Image
-                </div>
-                <h5>Tech Innovation Summit</h5>
-                <p className="meta">April 28, 2026</p>
-                <button type="button">View Details</button>
-              </article>
-
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Event Image
-                </div>
-                <h5>Music &amp; Arts Festival</h5>
-                <p className="meta">May 05, 2026</p>
-                <button type="button">View Details</button>
-              </article>
-
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Event Image
-                </div>
-                <h5>Startup Networking Night</h5>
-                <p className="meta">May 14, 2026</p>
-                <button type="button">View Details</button>
-              </article>
+              {featuredEvents.length === 0 ? (
+                <p className="meta">None</p>
+              ) : (
+                featuredEvents.map((event) => (
+                  <article key={event.id} className="card event-card">
+                    <img src={event.image || DEFAULT_EVENT_IMAGE} alt={event.title} className="event-image" />
+                    <h5>{event.title}</h5>
+                    <p className="meta">{event.dateLabel}</p>
+                    <button type="button" onClick={() => navigate(`/events/${event.id}`)}>
+                      View Details
+                    </button>
+                  </article>
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -124,32 +141,20 @@ export default function HomePage() {
           <div className="container">
             <h2 className="section-title">Top Stories</h2>
             <div className="events-grid stories-grid">
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Blog Cover
-                </div>
-                <h5>How I Sold Out My First Workshop</h5>
-                <p className="meta">By Event Organizer • 5 min read</p>
-                <button type="button">Read Story</button>
-              </article>
-
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Blog Cover
-                </div>
-                <h5>Best Tips to Choose the Right Event</h5>
-                <p className="meta">By Participant • 4 min read</p>
-                <button type="button">Read Story</button>
-              </article>
-
-              <article className="card event-card">
-                <div className="event-image" aria-hidden="true">
-                  Blog Cover
-                </div>
-                <h5>Managing Attendees Without Stress</h5>
-                <p className="meta">By Community Lead • 6 min read</p>
-                <button type="button">Read Story</button>
-              </article>
+              {topStories.length === 0 ? (
+                <p className="meta">None</p>
+              ) : (
+                topStories.map((blog) => (
+                  <article key={blog._id} className="card event-card">
+                    <img src={blog.image || DEFAULT_EVENT_IMAGE} alt={blog.title} className="event-image" />
+                    <h5>{blog.title}</h5>
+                    <p className="meta">
+                      By {blog.author || 'Event Team'} • {blog.readTimeMinutes || 5} min read
+                    </p>
+                    <button type="button" onClick={() => navigate('/blogs')}>Read Story</button>
+                  </article>
+                ))
+              )}
             </div>
           </div>
         </section>

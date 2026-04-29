@@ -12,6 +12,7 @@
 - organizerId (ref Organizer)
 - title, date, city, location, category
 - about, details
+- image (event poster URL/path)
 - ticketPrice
 - totalTicketsAvailable
 - ticketsSold

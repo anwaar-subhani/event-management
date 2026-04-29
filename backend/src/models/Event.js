@@ -14,6 +14,7 @@ const eventSchema = new mongoose.Schema(
     category: { type: String, required: true, trim: true },
     about: { type: String, required: true, trim: true },
     details: { type: String, required: true, trim: true },
+    image: { type: String, required: true, trim: true },
     ticketPrice: { type: Number, required: true, min: 0 },
     totalTicketsAvailable: { type: Number, required: true, min: 0 },
     ticketsSold: { type: Number, default: 0, min: 0 },

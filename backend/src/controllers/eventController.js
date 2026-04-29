@@ -5,6 +5,16 @@ function isValidObjectId(value) {
   return mongoose.Types.ObjectId.isValid(value);
 }
 
+function parseBoolean(value, defaultValue) {
+  if (value === undefined) return defaultValue;
+  if (typeof value === 'boolean') return value;
+
+  const normalized = String(value).trim().toLowerCase();
+  if (normalized === 'true') return true;
+  if (normalized === 'false') return false;
+  return defaultValue;
+}
+
 async function getAllEvents(req, res) {
   try {
     const events = await Event.find({ isActive: true, isPublished: true })
@@ -20,6 +30,36 @@ async function getAllEvents(req, res) {
     return res.status(500).json({
       success: false,
       message: 'Failed to fetch events',
+      data: null
+    });
+  }
+}
+
+async function getMyEvents(req, res) {
+  const organizerId = req.organizer && req.organizer.organizerId;
+
+  if (!organizerId || !isValidObjectId(organizerId)) {
+    return res.status(401).json({
+      success: false,
+      message: 'Organizer authentication is required',
+      data: null
+    });
+  }
+
+  try {
+    const events = await Event.find({ organizerId })
+      .sort({ createdAt: -1 })
+      .select('-__v');
+
+    return res.status(200).json({
+      success: true,
+      message: 'Organizer events fetched successfully',
+      data: { events }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch organizer events',
       data: null
     });
   }
@@ -84,6 +124,7 @@ async function createEvent(req, res) {
     category,
     about,
     details,
+    image,
     ticketPrice,
     totalTicketsAvailable,
     isPublished,
@@ -98,6 +139,7 @@ async function createEvent(req, res) {
     category,
     about,
     details,
+    image,
     ticketPrice,
     totalTicketsAvailable
   ];
@@ -128,10 +170,11 @@ async function createEvent(req, res) {
       category,
       about,
       details,
+      image,
       ticketPrice: Number(ticketPrice),
       totalTicketsAvailable: Number(totalTicketsAvailable),
-      isPublished: isPublished === undefined ? true : Boolean(isPublished),
-      isActive: isActive === undefined ? true : Boolean(isActive)
+      isPublished: parseBoolean(isPublished, true),
+      isActive: parseBoolean(isActive, true)
     });
 
     return res.status(201).json({
@@ -176,6 +219,7 @@ async function updateEvent(req, res) {
     'category',
     'about',
     'details',
+    'image',
     'ticketPrice',
     'totalTicketsAvailable',
     'isPublished',
@@ -241,6 +285,14 @@ async function updateEvent(req, res) {
 
     if (updates.totalTicketsAvailable !== undefined) {
       updates.totalTicketsAvailable = Number(updates.totalTicketsAvailable);
+    }
+
+    if (updates.isPublished !== undefined) {
+      updates.isPublished = parseBoolean(updates.isPublished, existingEvent.isPublished);
+    }
+
+    if (updates.isActive !== undefined) {
+      updates.isActive = parseBoolean(updates.isActive, existingEvent.isActive);
     }
 
     const updatedEvent = await Event.findByIdAndUpdate(eventId, updates, {
@@ -320,6 +372,7 @@ async function deleteEvent(req, res) {
 
 module.exports = {
   getAllEvents,
+  getMyEvents,
   getEventById,
   createEvent,
   updateEvent,

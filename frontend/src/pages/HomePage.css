@@ -209,8 +209,9 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 0.75rem;
-  display: grid;
-  place-items: center;
+  display: block;
+  object-fit: cover;
+  object-position: center;
   border: 1px dashed color-mix(in srgb, var(--secondary) 62%, transparent);
   background:
     linear-gradient(
