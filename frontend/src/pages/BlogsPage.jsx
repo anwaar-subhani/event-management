@@ -1,47 +1,47 @@
-import { useEffect, useMemo, useState } from 'react'
-import './BlogsPage.css'
-import Navbar from '../components/Navbar'
-import { apiRequest } from '../utils/api'
-import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper'
-import ShareButtons from '../components/ShareButtons'
-import { Link } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './BlogsPage.css';
+import './Dashboard.css';
+import Navbar from '../components/Navbar';
+import ManageBlogs from '../components/ManageBlogs';
+import { apiRequest, getAuthToken } from '../utils/api';
+import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper';
 
 function BlogsPage() {
-  const [blogs, setBlogs] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const [message, setMessage] = useState('')
-
-  const loadBlogs = async () => {
-    setIsLoading(true)
-    setMessage('')
-
-    try {
-      const response = await apiRequest('/blogs')
-      setBlogs(response?.data?.blogs || [])
-    } catch (error) {
-      setBlogs([])
-      setMessage(error.message || 'Failed to load blogs')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [blogs, setBlogs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAdminTools, setShowAdminTools] = useState(false);
+  const token = getAuthToken();
 
   useEffect(() => {
-    loadBlogs()
-  }, [])
+    const loadBlogs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await apiRequest('/blogs');
+        setBlogs(response?.data?.blogs || []);
+      } catch {
+        setBlogs([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBlogs();
+  }, []);
+
 
   const filteredBlogs = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase()
-    if (!term) return blogs
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return blogs;
 
     return blogs.filter((blog) => {
       return (
         String(blog.title || '').toLowerCase().includes(term) ||
         String(blog.description || '').toLowerCase().includes(term)
-      )
-    })
-  }, [blogs, searchTerm])
+      );
+    });
+  }, [blogs, searchTerm]);
 
   return (
     <>
@@ -63,7 +63,20 @@ function BlogsPage() {
             />
           </div>
 
-          {message ? <p>{message}</p> : null}
+          {token ? (
+            <section className="dashboard-panel" style={{ marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                <div>
+                  <h2 style={{ marginBottom: '0.4rem' }}>Blog Management</h2>
+                  <p style={{ margin: 0 }}>Create, edit, or delete blogs right here.</p>
+                </div>
+                <button type="button" onClick={() => setShowAdminTools((previous) => !previous)}>
+                  {showAdminTools ? 'Hide Tools' : 'Manage Blogs'}
+                </button>
+              </div>
+              {showAdminTools ? <ManageBlogs token={token} /> : null}
+            </section>
+          ) : null}
 
           <div className="blogs-grid-page">
             {isLoading ? (
@@ -79,10 +92,6 @@ function BlogsPage() {
                   <Link className="blog-read-link" to={`/blogs/${blog._id}`}>
                     Read More
                   </Link>
-                  <ShareButtons
-                    title={`Read: ${blog.title}`}
-                    text={`Check out this blog: ${blog.title} by ${blog.author || 'Event Team'}`}
-                  />
                 </article>
               ))
             )}
@@ -90,7 +99,7 @@ function BlogsPage() {
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default BlogsPage
+export default BlogsPage;

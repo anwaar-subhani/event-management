@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from '../utils/api';
 import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper';
 
-function ManageBlogs({ token, isAdmin }) {
+function ManageBlogs({ token }) {
   const [adminBlogs, setAdminBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -18,7 +18,7 @@ function ManageBlogs({ token, isAdmin }) {
   });
 
   const loadAdminBlogs = async () => {
-    if (!token || !isAdmin) {
+    if (!token) {
       setAdminBlogs([]);
       setIsLoading(false);
       return;
@@ -42,7 +42,7 @@ function ManageBlogs({ token, isAdmin }) {
 
   useEffect(() => {
     loadAdminBlogs();
-  }, [token, isAdmin]);
+  }, [token]);
 
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -68,8 +68,8 @@ function ManageBlogs({ token, isAdmin }) {
   const handleBlogSubmit = async (event) => {
     event.preventDefault();
 
-    if (!isAdmin || !token) {
-      setMessage('Admin access required to manage blogs.');
+    if (!token) {
+      setMessage('Please login to manage blogs.');
       return;
     }
 
@@ -116,7 +116,7 @@ function ManageBlogs({ token, isAdmin }) {
   };
 
   const handleDeleteBlog = async (blogId) => {
-    if (!isAdmin || !token) return;
+    if (!token) return;
 
     try {
       await apiRequest(`/blogs/${blogId}`, {
@@ -136,15 +136,6 @@ function ManageBlogs({ token, isAdmin }) {
       <div className="dashboard-panel">
         <h2>Manage Blogs</h2>
         <p>Please login to manage blogs.</p>
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="dashboard-panel">
-        <h2>Manage Blogs</h2>
-        <p>Admin access required.</p>
       </div>
     );
   }

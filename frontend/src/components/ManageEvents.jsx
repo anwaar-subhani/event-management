@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import LocationPicker from './LocationPicker';
 
 function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, updatingEventId }) {
   const [editingId, setEditingId] = useState('');
@@ -8,6 +7,7 @@ function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, u
   const [formData, setFormData] = useState({
     title: '',
     date: '',
+    city: '',
     location: '',
     category: '',
     about: '',
@@ -30,6 +30,7 @@ function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, u
     setFormData({
       title: event.title || '',
       date: event.dateInput || '',
+      city: event.city || '',
       location: event.location || '',
       category: event.category || '',
       about: event.about || '',
@@ -109,7 +110,7 @@ function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, u
                   <td>{event.category}</td>
                   <td>{event.ticketsSold}</td>
                   <td>{event.isActive ? 'Active' : 'Inactive'}</td>
-                  <td style={{ display: 'flex', gap: '0.5rem' }}>
+                  <td>
                     <button type="button" onClick={() => startEdit(event)}>
                       Edit
                     </button>
@@ -140,17 +141,13 @@ function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, u
               Date
               <input type="date" name="date" value={formData.date} onChange={handleInputChange} required />
             </label>
-            <label className="full-width-field">
+            <label>
+              City
+              <input name="city" value={formData.city} onChange={handleInputChange} required />
+            </label>
+            <label>
               Location
-              <LocationPicker
-                value={formData.location}
-                onChange={(address) =>
-                  setFormData((previous) => ({
-                    ...previous,
-                    location: address,
-                  }))
-                }
-              />
+              <input name="location" value={formData.location} onChange={handleInputChange} required />
             </label>
             <label>
               Category
@@ -195,7 +192,7 @@ function ManageEvents({ events, onDeleteEvent, deletingEventId, onUpdateEvent, u
               Active
             </label>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div>
             <button type="submit" disabled={updatingEventId === editingId}>
               {updatingEventId === editingId ? 'Updating...' : 'Update Event'}
             </button>

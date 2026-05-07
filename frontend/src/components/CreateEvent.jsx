@@ -1,10 +1,10 @@
 import { useState } from "react";
-import LocationPicker from "./LocationPicker";
 
 function CreateEvent({ onCreateEvent }) {
   const [formData, setFormData] = useState({
     title: "",
     date: "",
+    city: "",
     location: "",
     category: "",
     about: "",
@@ -31,10 +31,6 @@ function CreateEvent({ onCreateEvent }) {
     setMessage('');
 
     if (!onCreateEvent) return;
-    if (!formData.location.trim()) {
-      setMessage('Please select a location from the map.');
-      return;
-    }
 
     setIsLoading(true);
 
@@ -50,6 +46,7 @@ function CreateEvent({ onCreateEvent }) {
       setFormData({
         title: "",
         date: "",
+        city: "",
         location: "",
         category: "",
         about: "",
@@ -66,11 +63,8 @@ function CreateEvent({ onCreateEvent }) {
   };
 
   return (
-    <div className="dashboard-panel create-event-panel">
-      <div className="create-event-header">
-        <p className="create-event-eyebrow">Your Workspace</p>
-        <h2>Create Event</h2>
-      </div>
+    <div className="dashboard-panel">
+      <h2>Create Event</h2>
       <form className="create-event-form" onSubmit={handleSubmit}>
         <div className="create-event-grid">
           <label>
@@ -94,53 +88,59 @@ function CreateEvent({ onCreateEvent }) {
               required
             />
           </label>
-        </div>
-
-        <div className="event-main-layout">
-          <div className="location-field">
-            <label>Location</label>
-            <LocationPicker
-              value={formData.location}
-              onChange={(address) => setFormData((prev) => ({ ...prev, location: address }))}
+          <label>
+            City
+            <input
+              type="text"
+              name="city"
+              placeholder="Enter city"
+              value={formData.city}
+              onChange={handleChange}
+              required
             />
-          </div>
-
-          <div className="event-side-fields">
-            <label>
-              Category
-              <input
-                type="text"
-                name="category"
-                placeholder="Enter category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label className="full-width-field">
-              About
-              <textarea
-                name="about"
-                placeholder="Short overview about the event"
-                value={formData.about}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </label>
-            <label className="full-width-field">
-              Details
-              <textarea
-                name="details"
-                placeholder="Detailed information for attendees"
-                value={formData.details}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </label>
-          </div>
-        </div>
-
-        <div className="create-event-grid create-event-footer-grid">
+          </label>
+          <label>
+            Location
+            <input
+              type="text"
+              name="location"
+              placeholder="Enter location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
+            Category
+            <input
+              type="text"
+              name="category"
+              placeholder="Enter category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label className="full-width-field">
+            About
+            <textarea
+              name="about"
+              placeholder="Short overview about the event"
+              value={formData.about}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </label>
+          <label className="full-width-field">
+            Details
+            <textarea
+              name="details"
+              placeholder="Detailed information for attendees"
+              value={formData.details}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </label>
           <label>
             Ticket Price
             <input

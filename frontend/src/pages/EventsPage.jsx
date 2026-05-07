@@ -11,10 +11,9 @@ export default function EventsPage() {
   const [events, setEvents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
-  const [searchName, setSearchName] = useState('')
-  const [searchLocation, setSearchLocation] = useState('')
-  const [selectedDate, setSelectedDate] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCity, setSelectedCity] = useState('All')
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
@@ -41,30 +40,27 @@ export default function EventsPage() {
     return ['All', ...uniqueCategories]
   }, [events])
 
+  const cities = useMemo(() => {
+    const uniqueCities = Array.from(new Set(events.map((event) => event.city)))
+    return ['All', ...uniqueCities]
+  }, [events])
+
   const filteredEvents = useMemo(() => {
-    const normalizedName = searchName.trim().toLowerCase()
-    const normalizedLocation = searchLocation.trim().toLowerCase()
+    const term = searchTerm.trim().toLowerCase()
 
     return events.filter((event) => {
-      const eventTitle = String(event.title || '').toLowerCase()
-      const eventCategory = String(event.category || '').toLowerCase()
-      const eventCity = String(event.city || '').toLowerCase()
-      const eventLocation = String(event.location || '').toLowerCase()
+      const matchesSearch =
+        event.title.toLowerCase().includes(term) ||
+        String(event.dateLabel || event.date).toLowerCase().includes(term)
 
-      const matchesName = !normalizedName || eventTitle.includes(normalizedName)
+      const matchesCategory =
+        selectedCategory === 'All' || event.category === selectedCategory
 
-      const matchesCategory = selectedCategory === 'All' || eventCategory === selectedCategory.toLowerCase()
+      const matchesCity = selectedCity === 'All' || event.city === selectedCity
 
-      const matchesLocation =
-        !normalizedLocation ||
-        eventCity.includes(normalizedLocation) ||
-        eventLocation.includes(normalizedLocation)
-
-      const matchesDate = !selectedDate || event.dateInput === selectedDate
-
-      return matchesName && matchesCategory && matchesLocation && matchesDate
+      return matchesSearch && matchesCategory && matchesCity
     })
-  }, [events, searchName, selectedCategory, searchLocation, selectedDate])
+  }, [events, searchTerm, selectedCategory, selectedCity])
 
   const totalPages = Math.max(1, Math.ceil(filteredEvents.length / EVENTS_PER_PAGE))
   const safePage = Math.min(currentPage, totalPages)
@@ -76,8 +72,8 @@ export default function EventsPage() {
     setCurrentPage(pageNumber)
   }
 
-  const handleNameChange = (event) => {
-    setSearchName(event.target.value)
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value)
     setCurrentPage(1)
   }
 
@@ -86,21 +82,8 @@ export default function EventsPage() {
     setCurrentPage(1)
   }
 
-  const handleLocationChange = (event) => {
-    setSearchLocation(event.target.value)
-    setCurrentPage(1)
-  }
-
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value)
-    setCurrentPage(1)
-  }
-
-  const clearFilters = () => {
-    setSearchName('')
-    setSelectedCategory('All')
-    setSearchLocation('')
-    setSelectedDate('')
+  const handleCityChange = (event) => {
+    setSelectedCity(event.target.value)
     setCurrentPage(1)
   }
 
@@ -113,9 +96,9 @@ export default function EventsPage() {
             <input
               className="events-search"
               type="text"
-              placeholder="Search by event name"
-              value={searchName}
-              onChange={handleNameChange}
+              placeholder="Search by event name or date (e.g. May 10, 2026)"
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
 
             <select
@@ -130,25 +113,17 @@ export default function EventsPage() {
               ))}
             </select>
 
-            <input
-              className="events-search"
-              type="text"
-              placeholder="Search by location"
-              value={searchLocation}
-              onChange={handleLocationChange}
-            />
-
-            <input
-              className="events-date-filter"
-              type="date"
-              value={selectedDate}
-              onChange={handleDateChange}
-              aria-label="Filter events by date"
-            />
-
-            <button type="button" className="events-clear-btn" onClick={clearFilters}>
-              Clear
-            </button>
+            <select
+              className="events-category-select"
+              value={selectedCity}
+              onChange={handleCityChange}
+            >
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
           </div>
 
           {isLoading ? (
