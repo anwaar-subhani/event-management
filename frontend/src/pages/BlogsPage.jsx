@@ -1,41 +1,47 @@
-import { useEffect, useMemo, useState } from 'react';
-import './BlogsPage.css';
-import Navbar from '../components/Navbar';
-import { apiRequest } from '../utils/api';
-import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper';
+import { useEffect, useMemo, useState } from 'react'
+import './BlogsPage.css'
+import Navbar from '../components/Navbar'
+import { apiRequest } from '../utils/api'
+import { DEFAULT_EVENT_IMAGE } from '../utils/eventMapper'
+import ShareButtons from '../components/ShareButtons'
+import { Link } from 'react-router-dom'
 
 function BlogsPage() {
-  const [blogs, setBlogs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [blogs, setBlogs] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [message, setMessage] = useState('')
+
+  const loadBlogs = async () => {
+    setIsLoading(true)
+    setMessage('')
+
+    try {
+      const response = await apiRequest('/blogs')
+      setBlogs(response?.data?.blogs || [])
+    } catch (error) {
+      setBlogs([])
+      setMessage(error.message || 'Failed to load blogs')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const loadBlogs = async () => {
-      setIsLoading(true);
-      try {
-        const response = await apiRequest('/blogs');
-        setBlogs(response?.data?.blogs || []);
-      } catch {
-        setBlogs([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadBlogs();
-  }, []);
+    loadBlogs()
+  }, [])
 
   const filteredBlogs = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase();
-    if (!term) return blogs;
+    const term = searchTerm.trim().toLowerCase()
+    if (!term) return blogs
 
     return blogs.filter((blog) => {
       return (
         String(blog.title || '').toLowerCase().includes(term) ||
         String(blog.description || '').toLowerCase().includes(term)
-      );
-    });
-  }, [blogs, searchTerm]);
+      )
+    })
+  }, [blogs, searchTerm])
 
   return (
     <>
@@ -57,6 +63,8 @@ function BlogsPage() {
             />
           </div>
 
+          {message ? <p>{message}</p> : null}
+
           <div className="blogs-grid-page">
             {isLoading ? (
               <p>Loading blogs...</p>
@@ -68,7 +76,13 @@ function BlogsPage() {
                   <img src={blog.image || DEFAULT_EVENT_IMAGE} alt={blog.title} />
                   <h3>{blog.title}</h3>
                   <p>{blog.description}</p>
-                  <button type="button">Read More</button>
+                  <Link className="blog-read-link" to={`/blogs/${blog._id}`}>
+                    Read More
+                  </Link>
+                  <ShareButtons
+                    title={`Read: ${blog.title}`}
+                    text={`Check out this blog: ${blog.title} by ${blog.author || 'Event Team'}`}
+                  />
                 </article>
               ))
             )}
@@ -76,7 +90,7 @@ function BlogsPage() {
         </div>
       </main>
     </>
-  );
+  )
 }
 
-export default BlogsPage;
+export default BlogsPage

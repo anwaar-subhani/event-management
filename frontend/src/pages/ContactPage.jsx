@@ -1,6 +1,14 @@
 import Navbar from "../components/Navbar";
 import "./ContactPage.css";
 
+const defaultLat = parseFloat(import.meta.env.VITE_DEFAULT_LAT)
+const defaultLng = parseFloat(import.meta.env.VITE_DEFAULT_LNG)
+const defaultAddress = import.meta.env.VITE_DEFAULT_ADDRESS || 'FAST NUCES, Block B, Faisal Town, Lahore'
+
+const mapSrc = !Number.isNaN(defaultLat) && !Number.isNaN(defaultLng)
+  ? `https://www.google.com/maps?q=${encodeURIComponent(`${defaultLat},${defaultLng}`)}&z=17&output=embed`
+  : `https://www.google.com/maps?q=${encodeURIComponent(defaultAddress)}&z=17&output=embed`
+
 function ContactPage() {
   return (
     <>
@@ -31,10 +39,11 @@ function ContactPage() {
               <h3>Our Location</h3>
               <iframe
                 title="map"
-                src="https://www.google.com/maps?q=Lahore&output=embed"
+                src={mapSrc}
                 allowFullScreen=""
                 loading="lazy"
               ></iframe>
+              <p className="contact-map-address">{defaultAddress}</p>
             </div>
           </div>
 

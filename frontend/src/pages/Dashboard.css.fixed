@@ -1,0 +1,12 @@
+.sidebar-logo {
+	margin: 0 0 0.5rem;
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.02em;
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: 1.42rem;
+	font-weight: 700;
+	letter-spacing: 0.015em;
+	line-height: 1;
+	color: var(--text);
+}

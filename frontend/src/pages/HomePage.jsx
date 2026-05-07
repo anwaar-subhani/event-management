@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar'
+import Logo from '../components/Logo'
 import './HomePage.css'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -163,15 +164,14 @@ export default function HomePage() {
           <div className="container footer-content">
             <div className="footer-brand">
               <h3 className="footer-brand-title">
-                <span className="brand-main">Event</span>
-                <span className="brand-accent">um</span>
+                <Logo isLink={false} />
               </h3>
               <p className="meta">Smart event discovery and management platform.</p>
             </div>
             <div className="footer-links">
               <p><strong>Email:</strong> support@eventhub.com</p>
               <p><strong>Phone:</strong> +1 (555) 014-2026</p>
-              <p><strong>Address:</strong> 12 Event Street, Downtown</p>
+              <p><strong>Address:</strong> FAST NUCES, Block B, Faisal Town, Lahore</p>
             </div>
           </div>
         </section>

@@ -35,11 +35,8 @@
 	gap: 0.65rem;
 }
 
-.sidebar h2 {
+.sidebar-brand {
 	margin: 0 0 0.5rem;
-	font-size: 1.777rem;
-	font-weight: 700;
-	color: var(--text);
 }
 
 .sidebar button {
@@ -177,12 +174,64 @@
 .create-event-form {
 	display: flex;
 	flex-direction: column;
+	gap: 1rem;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.create-event-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+
+.create-event-header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+	padding: 0.2rem 0.1rem 0.1rem;
+}
+
+.create-event-eyebrow {
+	margin: 0;
+	font-size: 0.82rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--buttons);
+}
+
+.create-event-description {
+	margin: 0;
+	max-width: 58rem;
+	font-size: 0.98rem;
+	line-height: 1.6;
+	color: color-mix(in srgb, var(--text) 78%, var(--secondary) 22%);
 }
 
 .create-event-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.8rem;
+	gap: 1rem;
+}
+
+.event-main-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+	gap: 1.1rem;
+	align-items: stretch;
+	min-height: 620px;
+}
+
+.event-side-fields {
+	display: grid;
+	grid-template-rows: auto 1fr 1.05fr;
+	gap: 0.95rem;
+	min-width: 0;
+	min-height: 100%;
 }
 
 .create-event-grid label {
@@ -190,6 +239,68 @@
 	flex-direction: column;
 	font-weight: 700;
 	font-size: 0.98rem;
+	padding: 0;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+	transition: none;
+}
+
+.location-field {
+	display: flex;
+	flex-direction: column;
+	font-weight: 700;
+	font-size: 0.98rem;
+	padding: 0;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+	transition: none;
+	min-width: 0;
+	min-height: 100%;
+	position: relative;
+	top: 0;
+}
+
+.location-field > label {
+	margin-bottom: 0.15rem;
+	font-size: 0.95rem;
+	letter-spacing: 0.01em;
+}
+
+.location-field .location-picker {
+	margin-top: 0.3rem;
+	flex: 1;
+}
+
+.event-side-fields label {
+	display: flex;
+	flex-direction: column;
+	font-weight: 700;
+	font-size: 0.98rem;
+	height: 100%;
+}
+
+.location-field .location-map-container {
+	flex: 1;
+}
+
+.location-field .location-map {
+	min-height: 420px;
+	height: 100%;
+}
+
+.event-side-fields textarea {
+	min-height: 0;
+	height: 100%;
+}
+
+.event-side-fields label:nth-child(2) textarea {
+	min-height: 145px;
+}
+
+.event-side-fields label:nth-child(3) textarea {
+	min-height: 225px;
 }
 
 .full-width-field {
@@ -198,26 +309,46 @@
 
 .dashboard-content h2 {
 	margin-bottom: 1rem;
-	font-size: 2.369rem;
-	line-height: 1.15;
+	font-size: 2.4rem;
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	background: linear-gradient(135deg, var(--text), var(--buttons));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
 }
 
 .dashboard-content input,
 .dashboard-content textarea,
 .dashboard-content select {
 	width: 100%;
-	margin: 0.5rem 0;
-	padding: 0.65rem 0.75rem;
-	border: 1px solid var(--secondary);
-	border-radius: 0.55rem;
-	background: color-mix(in srgb, var(--background) 92%, white 8%);
+	margin: 0.4rem 0 0;
+	padding: 0.82rem 0.95rem;
+	border: 1px solid color-mix(in srgb, var(--secondary) 66%, white 34%);
+	border-radius: 0.85rem;
+	background: linear-gradient(180deg, color-mix(in srgb, var(--background) 96%, white 4%), color-mix(in srgb, var(--background) 99%, white 1%));
 	color: var(--text);
 	font-size: 1rem;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-content input::placeholder,
+.dashboard-content textarea::placeholder {
+	color: color-mix(in srgb, var(--text) 42%, var(--secondary) 58%);
+	opacity: 1;
 }
 
 .dashboard-content textarea {
-	min-height: 120px;
+	min-height: 132px;
 	resize: vertical;
+}
+
+.dashboard-content input:disabled,
+.dashboard-content textarea:disabled,
+.dashboard-content select:disabled {
+	opacity: 0.75;
+	cursor: not-allowed;
 }
 
 .dashboard-content input:focus,
@@ -225,17 +356,60 @@
 .dashboard-content select:focus {
 	outline: none;
 	border-color: var(--buttons);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--buttons) 18%, transparent 82%);
 }
 
-.dashboard-content button {
-	margin-top: 0.6rem;
-	margin-right: 0.5rem;
+.create-event-form button {
+	align-self: flex-start;
+	margin-top: 0.25rem;
+	padding: 0.95rem 1.65rem;
+	border: none;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--buttons), color-mix(in srgb, var(--buttons) 68%, black 32%));
+	color: var(--background);
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	font-size: 1rem;
+	box-shadow: 0 16px 34px color-mix(in srgb, var(--buttons) 30%, transparent 70%);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.dashboard-content span {
-	display: inline-block;
-	min-width: 220px;
-	margin: 0.55rem 0.7rem 0.55rem 0;
+.create-event-form button:hover:not(:disabled) {
+	transform: translateY(-1px);
+	filter: brightness(1.03);
+	box-shadow: 0 18px 34px color-mix(in srgb, var(--buttons) 42%, transparent 58%);
+}
+
+.create-event-form button:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+	box-shadow: none;
+}
+
+.create-event-form p {
+	margin: 0;
+	padding: 0.78rem 0.95rem;
+	border-radius: 0.85rem;
+	background: color-mix(in srgb, var(--accent) 8%, var(--background) 92%);
+	border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--secondary) 82%);
+	color: var(--text);
+	font-weight: 600;
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
+}
+
+.create-event-panel .location-map {
+	height: 100%;
+}
+
+.create-event-panel .location-display-input {
+	font-size: 0.98rem;
+	font-weight: 600;
+}
+
+.create-event-panel .location-map-hint,
+.create-event-panel .location-map-status,
+.create-event-panel .location-map-error {
+	padding-left: 0.15rem;
 }
 
 @media (max-width: 900px) {
@@ -267,5 +441,52 @@
 
 	.create-event-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.event-main-layout {
+		grid-template-columns: 1fr;
+		min-height: auto;
+	}
+
+	.event-side-fields {
+		grid-template-rows: auto;
+	}
+
+	.location-field .location-map {
+		min-height: 280px;
+		height: 280px;
+	}
+
+	.create-event-form {
+		padding: 0;
+	}
+
+	.create-event-header {
+		padding: 0;
+	}
+
+	.create-event-form button {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 600px) {
+	.create-event-panel .location-map {
+		height: 280px;
+	}
+
+	.create-event-form {
+		gap: 1rem;
+	}
+
+	.create-event-grid label,
+	.location-field {
+		padding: 0;
+		border-radius: 0;
+	}
+
+	.create-event-description {
+		font-size: 0.95rem;
 	}
 }

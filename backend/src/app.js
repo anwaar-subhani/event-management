@@ -9,6 +9,7 @@ const organizerAuthRoutes = require('./routes/organizerAuthRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const blogRoutes = require('./routes/blogRoutes');
+const pdfRoutes = require('./routes/pdfRoutes');
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use('/api/organizers/auth', organizerAuthRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/blogs', blogRoutes);
+app.use('/api', pdfRoutes);
 
 module.exports = app;

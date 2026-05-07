@@ -17,7 +17,8 @@
 }
 
 .events-search,
-.events-category-select {
+.events-category-select,
+.events-date-filter {
   height: 42px;
   border: 1px solid color-mix(in srgb, var(--secondary) 48%, transparent);
   border-radius: 0.6rem;
@@ -29,11 +30,21 @@
 }
 
 .events-search {
-  width: min(620px, 96vw);
+  width: min(300px, 96vw);
 }
 
 .events-category-select {
   min-width: 170px;
+}
+
+.events-date-filter {
+  min-width: 170px;
+}
+
+.events-clear-btn {
+  height: 42px;
+  padding: 0 0.95rem;
+  border-radius: 0.6rem;
 }
 
 .events-grid-page {

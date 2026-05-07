@@ -131,10 +131,11 @@ async function createEvent(req, res) {
     isActive
   } = req.body;
 
+  const normalizedCity = city || location;
+
   const requiredValues = [
     title,
     date,
-    city,
     location,
     category,
     about,
@@ -165,7 +166,7 @@ async function createEvent(req, res) {
       organizerId,
       title,
       date,
-      city,
+      city: normalizedCity,
       location,
       category,
       about,

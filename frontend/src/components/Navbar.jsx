@@ -1,13 +1,11 @@
 import { NavLink } from 'react-router-dom'
+import Logo from './Logo'
 
 export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        <NavLink className="brand-link" to="/">
-          <span className="brand-main">Event</span>
-          <span className="brand-accent">um</span>
-        </NavLink>
+        <Logo isLink={true} />
 
         <div className="nav-left">
           <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>

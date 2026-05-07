@@ -1,11 +1,16 @@
-function Sidebar({ setActive, onLogout }) {
+import Logo from './Logo'
+
+function Sidebar({ setActive, canManageBlogs, onLogout }) {
   return (
     <div className="sidebar">
-      <h2>EventHub</h2>
+      <div className="sidebar-brand">
+        <Logo isLink={true} />
+      </div>
       <button onClick={() => setActive("dashboard")}>Dashboard</button>
       <button onClick={() => setActive("create")}>Create Event</button>
       <button onClick={() => setActive("manage")}>Manage Events</button>
-      <button onClick={onLogout}>Logout</button>
+      {canManageBlogs ? <button onClick={() => setActive("blogs")}>Manage Blogs</button> : null}
+      {onLogout && <button onClick={onLogout}>Logout</button>}
     </div>
   );
 }

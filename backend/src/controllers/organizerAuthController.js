@@ -20,6 +20,7 @@ function buildOrganizerResponse(organizer) {
     email: organizer.email,
     organizationName: organizer.organizationName,
     isActive: organizer.isActive,
+    isAdmin: organizer.isAdmin !== false,
     createdAt: organizer.createdAt,
     updatedAt: organizer.updatedAt
   };
@@ -174,11 +175,14 @@ async function organizerProfile(req, res) {
       });
     }
 
+    const organizerData = organizer.toObject();
+    organizerData.isAdmin = organizer.isAdmin !== false;
+
     return res.status(200).json({
       success: true,
       message: 'Organizer profile fetched successfully',
       data: {
-        organizer
+        organizer: organizerData
       }
     });
   } catch (error) {

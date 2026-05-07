@@ -197,6 +197,29 @@
   filter: brightness(0.94);
 }
 
+.purchase-download-button {
+  margin-top: 0.7rem;
+  border: 1px solid var(--buttons);
+  border-radius: 0.55rem;
+  padding: 0.65rem 1rem;
+  font-family: Garamond, 'Times New Roman', serif;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--buttons) 85%, var(--primary) 15%);
+  color: var(--background);
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.purchase-download-button:hover,
+.purchase-download-button:focus-visible {
+  filter: brightness(0.9);
+  outline: 2px solid var(--buttons);
+  outline-offset: 2px;
+}
+
 @media (max-width: 900px) {
   .event-details-page {
     padding: 34px 16px;

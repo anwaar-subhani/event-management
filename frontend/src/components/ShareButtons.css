@@ -1,0 +1,101 @@
+.share-buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--background) 90%, white 10%);
+  border: 1px solid var(--secondary);
+}
+
+.share-buttons-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.share-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--secondary);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--buttons) 88%, var(--background) 12%);
+  color: var(--background);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.share-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+}
+
+.share-copy {
+  position: relative;
+  width: auto;
+  padding: 0 0.6rem;
+}
+
+.copy-label {
+  display: inline;
+  font-size: 0.8rem;
+}
+
+.share-copy.copied {
+  background: color-mix(in srgb, var(--secondary) 80%, var(--background) 20%);
+  border-color: var(--secondary);
+}
+
+@media (max-width: 600px) {
+  .share-buttons-container {
+    gap: 0.5rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .share-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .share-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .copy-label {
+    display: none;
+  }
+
+  .share-copy {
+    width: 36px;
+    padding: 0;
+  }
+}

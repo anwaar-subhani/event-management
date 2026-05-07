@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { apiRequest } from '../utils/api'
 import { DEFAULT_EVENT_IMAGE, mapEventFromApi } from '../utils/eventMapper'
+import ShareButtons from '../components/ShareButtons'
 import './EventDetails.css'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
 export default function EventDetails() {
   const { eventId } = useParams()
   const [event, setEvent] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [purchasedTicketId, setPurchasedTicketId] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false)
   const [purchaseMessage, setPurchaseMessage] = useState('')
@@ -84,6 +88,10 @@ export default function EventDetails() {
         },
       })
 
+      // Capture purchase ID for ticket download
+      const purchaseId = response?.data?.purchase?._id || response?.data?.purchase?.id
+      if (purchaseId) setPurchasedTicketId(purchaseId)
+
       const remainingTickets = response?.data?.remainingTickets
       setPurchaseMessage(
         `Purchase successful! Remaining tickets: ${
@@ -100,6 +108,33 @@ export default function EventDetails() {
     }
   }
 
+
+  const downloadTicket = async (ticketId) => {
+    if (!ticketId) {
+      setPurchaseMessage('Ticket download is not available yet.')
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/tickets/${ticketId}/pdf`)
+      if (!response.ok) {
+        setPurchaseMessage('Failed to download PDF')
+        return
+      }
+      
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `ticket-${ticketId}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      setPurchaseMessage('Error downloading PDF: ' + error.message)
+    }
+  }
   if (isLoading) {
     return (
       <>
@@ -150,6 +185,11 @@ export default function EventDetails() {
             <h4>Ticket Price</h4>
             <p className="ticket-price">{event.ticketPriceLabel}</p>
 
+            <ShareButtons
+              title={`Check out: ${event.title}`}
+              text={`Join me at ${event.title} on ${event.dateLabel} in ${event.location}`}
+            />
+
             <div className="details-actions">
               <button className="details-purchase-link" type="button" onClick={openPurchaseModal}>
                 Purchase Tickets
@@ -186,66 +226,84 @@ export default function EventDetails() {
               <h3 id="purchase-modal-title">Purchase Tickets</h3>
               <p className="purchase-modal-subtitle">Maximum 5 tickets per CNIC</p>
 
-              <form className="purchase-form" onSubmit={handlePurchaseSubmit}>
-                <label htmlFor="ticketCount">Number of Tickets</label>
-                <input
-                  id="ticketCount"
-                  type="number"
-                  name="ticketCount"
-                  min="1"
-                  max="5"
-                  value={purchaseForm.ticketCount}
-                  onChange={handlePurchaseInputChange}
-                  required
-                />
+              {purchasedTicketId ? (
+                <div style={{ backgroundColor: '#d4edda', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem', textAlign: 'center' }}>
+                  <p style={{ margin: '0 0 0.8rem 0', fontWeight: 'bold', color: '#155724' }}>
+                    ✓ Purchase Successful!
+                  </p>
+                  <p style={{ margin: '0 0 1rem 0', color: '#155724' }}>
+                    {purchaseMessage}
+                  </p>
+                  <button
+                    type="button"
+                    className="purchase-download-button"
+                    onClick={() => downloadTicket(purchasedTicketId)}
+                  >
+                    ⬇ Download Ticket PDF
+                  </button>
+                </div>
+              ) : (
+                <form className="purchase-form" onSubmit={handlePurchaseSubmit}>
+                  <label htmlFor="ticketCount">Number of Tickets</label>
+                  <input
+                    id="ticketCount"
+                    type="number"
+                    name="ticketCount"
+                    min="1"
+                    max="5"
+                    value={purchaseForm.ticketCount}
+                    onChange={handlePurchaseInputChange}
+                    required
+                  />
 
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  value={purchaseForm.name}
-                  onChange={handlePurchaseInputChange}
-                  required
-                />
+                  <label htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    value={purchaseForm.name}
+                    onChange={handlePurchaseInputChange}
+                    required
+                  />
 
-                <label htmlFor="cnic">CNIC</label>
-                <input
-                  id="cnic"
-                  type="text"
-                  name="cnic"
-                  value={purchaseForm.cnic}
-                  onChange={handlePurchaseInputChange}
-                  placeholder="XXXXX-XXXXXXX-X"
-                  required
-                />
+                  <label htmlFor="cnic">CNIC</label>
+                  <input
+                    id="cnic"
+                    type="text"
+                    name="cnic"
+                    value={purchaseForm.cnic}
+                    onChange={handlePurchaseInputChange}
+                    placeholder="XXXXX-XXXXXXX-X"
+                    required
+                  />
 
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={purchaseForm.email}
-                  onChange={handlePurchaseInputChange}
-                  required
-                />
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={purchaseForm.email}
+                    onChange={handlePurchaseInputChange}
+                    required
+                  />
 
-                <label htmlFor="phone">Phone Number</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  value={purchaseForm.phone}
-                  onChange={handlePurchaseInputChange}
-                  required
-                />
+                  <label htmlFor="phone">Phone Number</label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    name="phone"
+                    value={purchaseForm.phone}
+                    onChange={handlePurchaseInputChange}
+                    required
+                  />
 
-                {purchaseMessage ? <p className="purchase-form-message">{purchaseMessage}</p> : null}
+                  {purchaseMessage ? <p className="purchase-form-message">{purchaseMessage}</p> : null}
 
-                <button className="purchase-submit-button" type="submit">
-                  {isPurchaseLoading ? 'Processing...' : 'Purchase'}
-                </button>
-              </form>
+                  <button className="purchase-submit-button" type="submit">
+                    {isPurchaseLoading ? 'Processing...' : 'Purchase'}
+                  </button>
+                </form>
+              )}
             </section>
           </div>
         ) : null}
