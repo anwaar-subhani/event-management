@@ -4,23 +4,23 @@ A full-stack web application built using the MERN stack for creating, managing, 
 
 ---
 
-# Project Overview
+## Project Overview
 
 The Smart Event Management System is designed to simplify event management by bringing organizers and participants onto a single platform. It allows users to discover events, register, receive notifications, and generate tickets, while organizers can manage events and track performance through analytics.
 
 ---
 
-# Core Features
+## Core Features
 
-## Authentication System
+### Authentication System
 - Secure login and signup
 - Role-based access control (Organizer, User)
 
-## Event Management (CRUD)
+### Event Management (CRUD)
 - Create, update, delete, and view events
 - Manage event details and schedules
 
-## Dashboard
+### Dashboard
 - Separate dashboards for users and admin
 - Event statistics and insights
 
@@ -28,52 +28,52 @@ The Smart Event Management System is designed to simplify event management by br
 - Create, edit, and delete event-related blogs
 - Share updates and information
 
-## Search & Filtering
+### Search & Filtering
 - Search events by name, category, or date
 
 ## Google Maps Integration
 - Display event locations using embedded Google Maps
 
-## PDF Ticket Generation
+### PDF Ticket Generation
 - Generate and download event tickets in PDF format
 
-## Notifications
+### Notifications
 - Notify users about registrations, updates, and upcoming events
 
-## AI Recommendation System
+### AI Recommendation System
 - Suggest events based on user interests and activity
 
-## Analytics Dashboard
+### Analytics Dashboard
 - View total events, registrations, revenue, and popular events
 
-## Cash Flow Tracking
+### Cash Flow Tracking
 - Track revenue, expenses, and profit per event
 
-## Responsive Design
+### Responsive Design
 - Fully responsive UI using Tailwind CSS / Bootstrap
 
 ---
 
-# Tech Stack
+## Tech Stack
 
-## Frontend
+### Frontend
 - React.js
 - Redux
 
-## Backend
+### Backend
 - Node.js
 - Express.js
 
-## Database
+### Database
 - MongoDB
 
-## Integrations
+### Integrations
 - Google Maps API
 - JWT Authentication
 - PDF generation libraries
 
 ---
 
-# Summary
+## Summary
 
 This project demonstrates full-stack development skills including authentication, CRUD operations, API integration, state management, and real-world system design for event management.
