@@ -24,14 +24,14 @@ The Smart Event Management System is designed to simplify event management by br
 - Separate dashboards for users and admin
 - Event statistics and insights
 
-## Blogs System
+### Blogs System
 - Create, edit, and delete event-related blogs
 - Share updates and information
 
 ### Search & Filtering
 - Search events by name, category, or date
 
-## Google Maps Integration
+### Google Maps Integration
 - Display event locations using embedded Google Maps
 
 ### PDF Ticket Generation
